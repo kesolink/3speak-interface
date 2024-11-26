@@ -1,0 +1,32 @@
+.select-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80vh;
+
+    .main-option{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .draft-wrap{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 350px;
+            height: 250px;
+            border-radius: 7px;
+            border: 1px solid black;
+            span{
+                font-size: 24px;
+                margin-top: 5px;
+            }
+        }
+        .or{
+            font-size: 30px;
+            padding: 0px 40px;
+        }
+    }
+
+}
