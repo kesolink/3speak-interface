@@ -1,199 +1,71 @@
 import "./Recommended.scss";
-import thumb1 from "../../assets/image/thumb01.jfif";
-import thumb2 from "../../assets/image/thumb02.jfif";
-import thumb3 from "../../assets/image/thumb03.jfif";
-import thumb4 from "../../assets/image/thumb04.jfif";
-import thumb5 from "../../assets/image/thumb05.jfif";
-import thumb6 from "../../assets/image/thumb06.jfif";
-import thumb7 from "../../assets/image/thumb07.jfif";
-// import thumb8 from "../../assets/image/thumb08.jfif";
-// import thumb9 from "../../assets/image/thumb09.jfif";
-// import thumb10 from "../../assets/image/thumb10.jfif";
+import PropTypes from "prop-types";
+import dayjs from "dayjs";
 import { FaEye } from "react-icons/fa";
 import { LuTimer } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
-function Recommended() {
+function Recommended({suggestedVideos}) {
+
+  console.log(suggestedVideos)
+  console.log('Image URL:', suggestedVideos?.spkvideo?.thumbnail_url);
   return (
     <div className="recommended">
-      <div className="side-video-list">
+      {suggestedVideos.map((data, index)=>(
+        <Link to={`/watch?v=${data?.author?.username}/${data.permlink ?? "unknown"}`} 
+        key={index}  >
+        <div className="side-video-list" key={index}>
         <div className="wrap-img">
-        <img src={thumb1} alt="" />
-        <span>02.54</span>
+        <img src={`https://images.hive.blog/320x0/${
+                data.spkvideo?.thumbnail_url ?? ""
+              }`} alt="" />
+        {/* <span>02.54</span> */}
         </div>
         <div className="vid-info">
-          <h4>best channel that help you be be a best developer</h4>
-          <p>GreatStack</p>
+          <h4>{data.title}</h4>
+          <div className="profile-wrap"><img src={data?.author?.profile?.images?.avatar} alt="" /><p>{data.author.id}</p></div>
           <div className="wrap">
             <div className="wrap-left">
               <div className="wrap">
-                <FaEye />
-                <span>23</span>
-              </div>
-              <div className="wrap">
                 <LuTimer />
-                <span>2 days ago</span>
+                <span>{dayjs(data.created_at).fromNow()}</span>
               </div>
             </div>
             <div className="wrap-right">
-                $23.01
+            ${data?.stats?.total_hive_reward.toFixed(2) ?? "0.00"}
             </div>
           </div>
         </div>
       </div>
-      <div className="side-video-list">
-        <div className="wrap-img">
-        <img src={thumb2} alt="" />
-        <span>02.54</span>
-        </div>
-        <div className="vid-info">
-          <h4>best channel that help you be be a best developer</h4>
-          <p>GreatStack</p>
-          <div className="wrap">
-            <div className="wrap-left">
-              <div className="wrap">
-                <FaEye />
-                <span>23</span>
-              </div>
-              <div className="wrap">
-                <LuTimer />
-                <span>2 days ago</span>
-              </div>
-            </div>
-            <div className="wrap-right">
-                $23.01
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="side-video-list">
-        <div className="wrap-img">
-        <img src={thumb3} alt="" />
-        <span>02.54</span>
-        </div>
-        <div className="vid-info">
-          <h4>best channel that help you be be a best developer</h4>
-          <p>GreatStack</p>
-          <div className="wrap">
-            <div className="wrap-left">
-              <div className="wrap">
-                <FaEye />
-                <span>23</span>
-              </div>
-              <div className="wrap">
-                <LuTimer />
-                <span>2 days ago</span>
-              </div>
-            </div>
-            <div className="wrap-right">
-                $23.01
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="side-video-list">
-        <div className="wrap-img">
-        <img src={thumb4} alt="" />
-        <span>02.54</span>
-        </div>
-        <div className="vid-info">
-          <h4>best channel that help you be be a best developer</h4>
-          <p>GreatStack</p>
-          <div className="wrap">
-            <div className="wrap-left">
-              <div className="wrap">
-                <FaEye />
-                <span>23</span>
-              </div>
-              <div className="wrap">
-                <LuTimer />
-                <span>2 days ago</span>
-              </div>
-            </div>
-            <div className="wrap-right">
-                $23.01
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="side-video-list">
-        <div className="wrap-img">
-        <img src={thumb5} alt="" />
-        <span>02.54</span>
-        </div>
-        <div className="vid-info">
-          <h4>best channel that help you be be a best developer</h4>
-          <p>GreatStack</p>
-          <div className="wrap">
-            <div className="wrap-left">
-              <div className="wrap">
-                <FaEye />
-                <span>23</span>
-              </div>
-              <div className="wrap">
-                <LuTimer />
-                <span>2 days ago</span>
-              </div>
-            </div>
-            <div className="wrap-right">
-                $23.01
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="side-video-list">
-        <div className="wrap-img">
-        <img src={thumb6} alt="" />
-        <span>02.54</span>
-        </div>
-        <div className="vid-info">
-          <h4>best channel that help you be be a best developer</h4>
-          <p>GreatStack</p>
-          <div className="wrap">
-            <div className="wrap-left">
-              <div className="wrap">
-                <FaEye />
-                <span>23</span>
-              </div>
-              <div className="wrap">
-                <LuTimer />
-                <span>2 days ago</span>
-              </div>
-            </div>
-            <div className="wrap-right">
-                $23.01
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="side-video-list">
-        <div className="wrap-img">
-        <img src={thumb7} alt="" />
-        <span>02.54</span>
-        </div>
-        <div className="vid-info">
-          <h4>best channel that help you be be a best developer</h4>
-          <p>GreatStack</p>
-          <div className="wrap">
-            <div className="wrap-left">
-              <div className="wrap">
-                <FaEye />
-                <span>23</span>
-              </div>
-              <div className="wrap">
-                <LuTimer />
-                <span>2 days ago</span>
-              </div>
-            </div>
-            <div className="wrap-right">
-                $23.01
-            </div>
-          </div>
-        </div>
-      </div>
+      </Link>
       
+      ))}
       
     </div>
   );
 }
+
+Recommended.propTypes = {
+  suggestedVideos: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      spkvideo: PropTypes.shape({
+        thumbnail_url: PropTypes.string
+      }),
+      author: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        profile: PropTypes.shape({
+          images: PropTypes.shape({
+            avatar: PropTypes.string.isRequired
+          })
+        })
+      }),
+      created_at: PropTypes.string.isRequired,
+      stats: PropTypes.shape({
+        total_hive_reward: PropTypes.number
+      })
+    })
+  ).isRequired
+};
 
 export default Recommended;

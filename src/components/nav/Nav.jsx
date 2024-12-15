@@ -4,7 +4,10 @@ import "./nav.scss";
 import { CiSearch } from "react-icons/ci";
 import profile_icon from "../../assets/image/profile-icon.png";
 import Sidebar from "../Sidebar/Sidebar";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 function Nav( {setSideBar}) {
+  const [isLogin, setIsLogin] = useState(false)
   return (
     <nav className="nav-container">
       <div className="nav-left flex-dev">
@@ -17,11 +20,14 @@ function Nav( {setSideBar}) {
           <CiSearch className="search-icon" />
         </div>
       </div>
+      {isLogin ? (
       <div className="nav-right flex-div">
         <span>kesolink</span>
         <img src={profile_icon} className="profile" alt="" />
         
-      </div>
+      </div>):(
+      <Link to="/login" ><button>LOG IN</button></Link>
+      )}
     </nav>
   );
 }
