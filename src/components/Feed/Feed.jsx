@@ -15,37 +15,13 @@ import user_img from "../../assets/image/user-img.avif"
 import { Link } from "react-router-dom"
 import { IoChevronUpCircleOutline } from "react-icons/io5"
 import { GiEternalLove } from "react-icons/gi"
-import { FaComment, FaRetweet, FaVideo } from "react-icons/fa"
+// import { FaComment, FaRetweet, FaVideo } from "react-icons/fa"
+import CommunitiesTags from "../communities-tags/CommunitiesTags"
 function Feed() {
   return (
     <>
-    <div className="wrap-community">
-        <div className="wrap">
-        <span>splinterlands</span>
-        <span>vibes</span>
-        <span>music</span>
-        <span>garden</span>
-        <span>motivation</span>
-        <span>Qurator</span>
-        <span>Foodies Bee Hive</span>
-        <span>LeoFinance</span>
-        {/* <span>garden</span>
-        <span>motivation</span>
-        <span>Qurator</span>
-        <span>Foodies Bee Hive</span>
-        <span>LeoFinance</span>
-        <span>garden</span>
-        <span>motivation</span>
-        <span>Qurator</span> */}
-        <span>Foodies Bee Hive</span>
-        <span>LeoFinance</span>
-        </div>
+    <CommunitiesTags />
 
-        <div className="wrap-upload-video">
-        <FaVideo />
-        </div>
-
-    </div>
     <div className="feed">
       <Link to={`video/20/4521`} className="card">
         <div className="img-wrap">

@@ -1,156 +1,175 @@
-import "./PlayVideo.scss"
-import video_play from "../../assets/image/video.mkv"
-import { FaEye} from 'react-icons/fa'
-import kesolink from "../../assets/image/kesolink.JPG"
-import { LuTimer } from 'react-icons/lu'
-import { BiDislike, BiLike } from 'react-icons/bi'
-import { GiTwoCoins } from 'react-icons/gi'
-import { useState } from "react"
-const PlayVideo = () => {
-    const initialContent = `
-    <h1>Welcome to My Blog!</h1>
-    <p>
-      Hi there! My name is Kesolink, and this is my corner of the internet where I share insights, stories, and tips about technology, web development, and life as a developer in Nigeria.
-    </p>
-    
-    <h2>Why I Started This Blog</h2>
-    <p>
-      Over the years, I’ve learned so much from the amazing developer community, and this blog is my way of giving back. Here, you'll find tutorials, project ideas, and reflections that I hope will inspire and help you on your journey.
-    </p>
-    
-    <blockquote>
-      "Learning never exhausts the mind." – Leonardo da Vinci
-    </blockquote>
-  
-    <h3>What You’ll Find Here</h3>
-    <ul>
-      <li><strong>Technical Tutorials</strong>: Guides on React, Node.js, and blockchain development.</li>
-      <li><strong>Project Highlights</strong>: Stories from the projects I’ve built, like my blockchain and token apps.</li>
-      <li><strong>Personal Growth</strong>: Tips on self-improvement, decision-making, and earning money online.</li>
-    </ul>
-    
-    <p>
-      Thanks for stopping by! Feel free to explore, leave comments, and connect with me. Let’s build, learn, and grow together!
-    </p>
-  `;
+import PropTypes from "prop-types";
+import "./PlayVideo.scss";
+import { FaEye } from "react-icons/fa";
 
-    const [content, setContent] = useState(initialContent);
+import { LuTimer } from "react-icons/lu";
+import { BiDislike, BiLike } from "react-icons/bi";
+import { GiTwoCoins } from "react-icons/gi";
+import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import {
+  GET_PROFILE,
+  GET_TOTAL_COUNT_OF_FOLLOWING,
+  GET_VIDEO,
+} from "../../graphql/queries";
+import ReactJWPlayer from "react-jw-player";
+import dayjs from "dayjs";
+import BlogContent from "./BlogContent";
+import CommentSection from "./CommentSection";
+// import ReactPlayer from 'react-player';
 
+const PlayVideo = ({ videoDetails, author, permlink }) => {
+  console.log(author);
 
+  const {
+    data: getVideo,
+    loading,
+    error,
+  } = useQuery(GET_VIDEO, { variables: { author, permlink }, ssr: true });
+  console.log(getVideo);
+  const spkvideo = getVideo?.socialPost.spkvideo;
+  const [videoUrlSelected, setVideoUrlSelected] = useState(null);
+
+  const { data: followData, loading: followLoading } = useQuery(
+    GET_TOTAL_COUNT_OF_FOLLOWING,
+    {
+      variables: { id: videoDetails?.author?.id || "" }, // use default value to avoid issues
+    }
+  );
+
+  const getUserProfile = useQuery(GET_PROFILE, {
+    variables: { id: videoDetails?.author?.id },
+  });
+
+  const profile = getUserProfile.data?.profile;
+  const content = videoDetails?.body.split("\n");
+
+  useEffect(() => {
+    if (spkvideo?.play_url) {
+      const url = spkvideo.play_url;
+      const result = url.includes("ipfs://")
+        ? url.split("ipfs://")[1] // Extract the IPFS hash
+        : url;
+      console.log(result);
+      setVideoUrlSelected(`https://ipfs-3speak.b-cdn.net/ipfs/${result}`);
+    }
+  }, [spkvideo]);
+
+  if (loading) {
+    return <div>Loadingg.......</div>;
+  }
+
+  console.log(videoDetails);
 
   return (
-    <div className='play-video'>
-        <video src={video_play} controls autoPlay muted></video>
-        <h3>Best video presentation i made for my boss</h3>
-        <div className="play-video-info">
-            <div className="wrap-left">
-              <div className="wrap">
-                <FaEye />
-                <span>23</span>
-              </div>
-              <div className="wrap">
-                <LuTimer />
-                <span>2 days ago</span>
-              </div>
-          </div>
-            <div className='wrap-right'>
-                <span className='wrap'><BiLike className='icon' /><span>259</span></span>
-                <span className='wrap'><BiDislike className='icon' /><span>14</span></span>
-                <span className='wrap'><GiTwoCoins className='icon' /><span>$23.01</span></span>
-                <span>Reply</span>
-            </div>
-        </div>
-        <hr />
-        <div className="big-mid-wrap"></div>
-        <div className="publisher">
-            <img src={kesolink} alt="" />
-            <div>
-                <p>GreatStack</p>
-                <span>300 Followers</span>
-            </div>
-            <button>Follow </button>
-        </div>
+    <div className="play-video">
+      <ReactJWPlayer
+        licenseKey="64HPbvSQorQcd52B8XFuhMtEoitbvY/EXJmMBfKcXZQU2Rnn"
+        customProps={{
+          playbackRateControls: true,
+          autostart: false,
+        }}
+        file={`${videoUrlSelected}`}
+        image={`${spkvideo?.thumbnail_url}`}
+        id="botr_UVQWMA4o_kGWxh33Q_div"
+        playerId={"1242424242"}
+        playerScript="https://cdn.jwplayer.com/libraries/HT7Dts3H.js"
+      ></ReactJWPlayer>
+      {/* <ReactPlayer 
+        url={`${videoUrlSelected}`}
+        controls 
+        playing={false} 
+        light={spkvideo?.thumbnail_url} // This shows the thumbnail
+        width="100%" 
+        height="100%" 
+      /> */}
 
-        <div className="description-wrap">
+      <h3>{videoDetails?.title}</h3>
+      <div className="play-video-info">
+        <div className="wrap-left">
+          <div className="wrap">
+            <FaEye />
+            <span>23</span>
+          </div>
+          <div className="wrap">
+            <LuTimer />
+            <span>{dayjs(videoDetails?.created_at).fromNow()}</span>
+          </div>
+        </div>
+        <div className="wrap-right">
+          <span className="wrap">
+            <BiLike className="icon" />
+            <span>{videoDetails?.stats.num_votes}</span>
+          </span>
+          <span className="wrap">
+            <BiDislike className="icon" />
+            <span>0</span>
+          </span>
+          <span className="wrap">
+            <GiTwoCoins className="icon" />
+            <span>${videoDetails?.stats.total_hive_reward.toFixed(2)}</span>
+          </span>
+          <span>Reply</span>
+        </div>
+      </div>
+      <hr />
+      <div className="big-mid-wrap"></div>
+      <div className="publisher">
+        <img src={profile?.images?.avatar} alt="" />
+        <div>
+          <p>{videoDetails?.author?.id}</p>
+          <span>{followData?.follows?.followers_count} Followers</span>
+        </div>
+        <button>Follow </button>
+      </div>
+
+      <div className="description-wrap">
         <div
           className="blog-content"
-          dangerouslySetInnerHTML={{ __html: content }}
-        ></div>
+          // dangerouslySetInnerHTML={{ __html: videoDetails?.body }}
+        >
+          <BlogContent content={content} />
         </div>
+      </div>
 
-
-
-
-        <div className="vid-comment-wrap">
-            <h4>10 comment</h4>
-            <div className="comment">
-                <img src={kesolink} alt="" />
-                <div>
-                    <h3>Jack Nicholsonc <span>1 day ago</span></h3>
-                    <p>I was given birth to in the 20th century so I didn't have the chance or the opportunity to listen to most of the great Bob marley songs</p>
-                    <div className="comment-action">
-                    <div className="wrap"><BiLike /> <span>244</span></div>
-                    <div className="wrap"><BiDislike /> <span>0</span></div>
-                    <div className="wrap"><GiTwoCoins /> <span>$0.91</span></div>
-                    <span>Reply</span>
-                    </div>
-                </div>
-            </div>
-            <div className="comment">
-                <img src={kesolink} alt="" />
-                <div>
-                    <h3>Jack Nicholsonc <span>1 day ago</span></h3>
-                    <p>I was given birth to in the 20th century so I didn't have the chance or the opportunity to listen to most of the great Bob marley songs</p>
-                    <div className="comment-action">
-                    <div className="wrap"><BiLike /> <span>244</span></div>
-                    <div className="wrap"><BiDislike /> <span>0</span></div>
-                    <div className="wrap"><GiTwoCoins /> <span>$0.91</span></div>
-                    <span>Reply</span>
-                    </div>
-                </div>
-            </div>
-            <div className="comment">
-                <img src={kesolink} alt="" />
-                <div>
-                    <h3>Jack Nicholsonc <span>1 day ago</span></h3>
-                    <p>I was given birth to in the 20th century so I didn't have the chance or the opportunity to listen to most of the great Bob marley songs</p>
-                    <div className="comment-action">
-                    <div className="wrap"><BiLike /> <span>244</span></div>
-                    <div className="wrap"><BiDislike /> <span>0</span></div>
-                    <div className="wrap"><GiTwoCoins /> <span>$0.91</span></div>
-                    <span>Reply</span>
-                    </div>
-                </div>
-            </div>
-            <div className="comment">
-                <img src={kesolink} alt="" />
-                <div>
-                    <h3>Jack Nicholsonc <span>1 day ago</span></h3>
-                    <p>I was given birth to in the 20th century so I didn't have the chance or the opportunity to listen to most of the great Bob marley songs</p>
-                    <div className="comment-action">
-                    <div className="wrap"><BiLike /> <span>244</span></div>
-                    <div className="wrap"><BiDislike /> <span>0</span></div>
-                    <div className="wrap"><GiTwoCoins /> <span>$0.91</span></div>
-                    <span>Reply</span>
-                    </div>
-                </div>
-            </div>
-            <div className="comment">
-                <img src={kesolink} alt="" />
-                <div>
-                    <h3>Jack Nicholsonc <span>1 day ago</span></h3>
-                    <p>I was given birth to in the 20th century so I didn't have the chance or the opportunity to listen to most of the great Bob marley songs</p>
-                    <div className="comment-action">
-                    <div className="wrap"><BiLike /> <span>244</span></div>
-                    <div className="wrap"><BiDislike /> <span>0</span></div>
-                    <div className="wrap"><GiTwoCoins /> <span>$0.91</span></div>
-                    <span>Reply</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <CommentSection
+        videoDetails={videoDetails}
+        author={author}
+        permlink={permlink}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default PlayVideo
+PlayVideo.propTypes = {
+  videoDetails: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    thumbnail_url: PropTypes.string,
+    body: PropTypes.string,
+    stats: PropTypes.shape({
+      num_votes: PropTypes.number,
+      total_hive_reward: PropTypes.number,
+      num_comments: PropTypes.number,
+    }),
+    author: PropTypes.shape({
+      follower_count: PropTypes.number,
+      id: PropTypes.string,
+    }),
+    comments: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        author: PropTypes.string,
+        text: PropTypes.string,
+        date: PropTypes.string,
+        likes: PropTypes.number,
+        dislikes: PropTypes.number,
+        reward: PropTypes.number,
+      })
+    ),
+  }),
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
+};
+
+export default PlayVideo;
