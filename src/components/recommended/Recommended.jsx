@@ -9,6 +9,9 @@ function Recommended({suggestedVideos}) {
 
   console.log(suggestedVideos)
   console.log('Image URL:', suggestedVideos?.spkvideo?.thumbnail_url);
+
+  const titleTextTruncate = (text, maxLength) =>
+    text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
   return (
     <div className="recommended">
       {suggestedVideos.map((data, index)=>(
@@ -22,7 +25,7 @@ function Recommended({suggestedVideos}) {
         {/* <span>02.54</span> */}
         </div>
         <div className="vid-info">
-          <h4>{data.title}</h4>
+          <h4>{titleTextTruncate(data.title, 56)}</h4>
           <div className="profile-wrap"><img src={data?.author?.profile?.images?.avatar} alt="" /><p>{data.author.id}</p></div>
           <div className="wrap">
             <div className="wrap-left">

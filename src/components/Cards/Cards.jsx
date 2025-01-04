@@ -7,6 +7,8 @@ import { FaCircleUser } from "react-icons/fa6";
 import PropTypes from "prop-types";
 import "./Cards.scss";
 
+import img from "../../assets/image/deleted.jpg"
+
 dayjs.extend(relativeTime);
 
 function Cards({
@@ -23,10 +25,13 @@ function Cards({
   if (error) return <div>Error: {error}</div>;
 
   const voters = (numVotes) => (numVotes <= 0 ? 0 : numVotes);
+  console.log(videos)
 
-  const aboutTextTruncate = (text, maxLength) =>
-    text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+  // const aboutTextTruncate = (text, maxLength) =>
+  //   text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
 
+  // https://ipfs-3speak.b-cdn.net/ipfs/bafkreie5aq4nx2yjb2xnmtbjllfm6q4ptlqi6gwqu74ivb3rq77dq7cmju
+  // https://media.3speak.tv/jevmpseu/thumbnails/default.png
   return (
     <div className={`card-container ${className}`}>
       {videos.map((video, index) => (
@@ -37,15 +42,21 @@ function Cards({
         >
           <div className="img-wrap">
             <img
-              src={`https://images.hive.blog/320x0/${
-                video.spkvideo?.thumbnail_url ?? ""
-              }`}
+              // src={`https://images.hive.blog/320x0/${
+              //   video.spkvideo?.thumbnail_url ?? ""
+              // }`}
+              src={
+                video.spkvideo?.thumbnail_url === "https://media.3speak.tv/jevmpseu/thumbnails/default.png"
+                  ? img
+                  : `https://images.hive.blog/320x0/${video.spkvideo?.thumbnail_url ?? ""}`
+              }
               alt="thumbnail"
               onError={(e) => (e.currentTarget.src = defaultThumbnail)}
             />
             <div className="wrap">
               <div className="user-wrap flex-div">
-                <FaCircleUser size={16} />
+                {/* <FaCircleUser size={16} /> */}
+                {video?.author?.profile?.images?.avatar ? <img src={video?.author?.profile?.images?.avatar} alt="" /> : <FaCircleUser size={16} />}
                 <span>{video.author?.username ?? defaultUsername}</span>
               </div>
               <span className="play">
@@ -55,12 +66,15 @@ function Cards({
                   .padStart(2, "0")}
               </span>
             </div>
-            <div className="buttom-title">
+            {/* <div className="buttom-title">
               <p>{video.title}</p>
-            </div>
+            </div> */}
           </div>
-          <h2>
+          {/* <h2>
             {aboutTextTruncate(video.community?.about ?? "", truncateLength)}
+          </h2> */}
+          <h2>
+          {video.title}
           </h2>
           <h3>Vibes</h3>
           <div className="bottom-action">

@@ -2,12 +2,17 @@
   margin: 0;
   padding: 0;
   box-sizing: 0;
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
+  font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 a{
   text-decoration: none;
   color: #5a5a5a;
+}
+
+button{
+  cursor: pointer;
 }
 
 img{
