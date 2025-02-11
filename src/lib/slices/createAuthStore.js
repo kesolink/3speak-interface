@@ -1,15 +1,18 @@
 import axios from "axios";
 import { api } from "../../utils/api";
 import { API_URL_FROM_WEST } from "../../utils/config";
+import {persist} from "zustand/middleware"
 
 const LOCAL_STORAGE_USER_ID_KEY = "user_id";
 
 export const createAuthUserSlice = (set) => ({
   authenticated: false,
   userId: null,
+  user: null,
   listAccounts: [],
   allowAccess: null,
   userDetails: null,
+
 
 
   // Initialize the store on app load
@@ -22,6 +25,14 @@ export const createAuthUserSlice = (set) => ({
       } else {
         set({ authenticated: false });
       }
+    }
+  },
+
+  setActiveUser: async () => {
+    const accounts = localStorage.getItem("user_id");
+    if (accounts) {
+      set({ user: accounts });
+      // console.log("im from setAccounts now", user);
     }
   },
 

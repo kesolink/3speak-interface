@@ -8,7 +8,7 @@ import { LOCAL_STORAGE_ACCESS_TOKEN_KEY, LOCAL_STORAGE_USER_ID_KEY } from '../..
 import { useAppStore } from '../../lib/store';
 function KeyChainLogin() {
   const client = axios.create({});
-  const { initializeAuth } = useAppStore();
+  const { initializeAuth, setActiveUser } = useAppStore();
   const studioEndPoint = "https://studio.3speak.tv";
   const [username, setUsername] = useState('');
   const [accessToken, setAccessToken] = useState("");
@@ -41,6 +41,7 @@ function KeyChainLogin() {
             window.localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY, decodedMessage);
               window.localStorage.setItem(LOCAL_STORAGE_USER_ID_KEY, username);
               initializeAuth()
+              setActiveUser()
               navigate("/");
 
           }

@@ -18,6 +18,8 @@ import LoginNew from './page/Login/LoginNew'
 import { useAppStore } from './lib/store'
 import { useEffect } from 'react'
 import ProfileNav from './components/nav/ProfileNav'
+import StudioPage from './components/studio/studioPage'
+import TestStudio from './components/studio/TestStudio'
 
 function App() {
   const {initializeAuth, authenticated } = useAppStore();
@@ -52,6 +54,8 @@ function App() {
          <Route path="/login" element={<Login/>} />
          <Route path="/keychain" element={<KeyChainLogin />} />
          <Route path="/newlogin" element={<LoginNew />} />
+         <Route path="/studio" element={<StudioPage />} />
+         <Route path="/teststudio" element={<TestStudio />} />
        </Routes>
       </div>
        <ProfileNav isVisible={profileNavVisible} onclose={toggleProfileNav} />
