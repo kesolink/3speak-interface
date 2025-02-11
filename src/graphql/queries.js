@@ -69,13 +69,41 @@ export const GET_VIDEO_DETAILS = gql`
 `;
 
 //TODO: why its not working when removing the repeated code
+// export const GET_COMMENTS = gql`
+//   query CommentsInfo($permlink: String = "", $author: String = "") {
+//     socialPost(author: $author, permlink: $permlink) {
+//       ... on HivePost {
+//         children {
+//           stats {
+//            num_comments
+//           }
+//           author {
+//             username
+//             profile {
+//               ... on HiveProfile {
+//                 name
+//                 images {
+//                   avatar
+//                 }
+//               }
+//             }
+//           }
+//           body
+//           permlink
+//           created_at
+//         }
+//       }
+//     }
+//   }
+// `;
+
 export const GET_COMMENTS = gql`
   query CommentsInfo($permlink: String = "", $author: String = "") {
     socialPost(author: $author, permlink: $permlink) {
       ... on HivePost {
         children {
           stats {
-           num_comments
+            num_comments
           }
           author {
             username
@@ -91,11 +119,325 @@ export const GET_COMMENTS = gql`
           body
           permlink
           created_at
+          children {
+            stats {
+              num_comments
+              num_votes
+              total_hive_reward
+            }
+            author {
+              username
+              profile {
+                ... on HiveProfile {
+                  name
+                  images {
+                    avatar
+                  }
+                }
+              }
+            }
+            body
+            permlink
+            created_at
+            children {
+              stats {
+                num_comments
+                num_votes
+                total_hive_reward
+              }
+              author {
+                username
+                profile {
+                  ... on HiveProfile {
+                    name
+                    images {
+                      avatar
+                    }
+                  }
+                }
+              }
+              body
+              permlink
+              created_at
+              children {
+                stats {
+                  num_comments
+                  num_votes
+                  total_hive_reward
+                }
+                author {
+                  username
+                  profile {
+                    ... on HiveProfile {
+                      name
+                      images {
+                        avatar
+                      }
+                    }
+                  }
+                }
+                body
+                permlink
+                created_at
+                children {
+                  stats {
+                    num_comments
+                    num_votes
+                    total_hive_reward
+                  }
+                  author {
+                    username
+                    profile {
+                      ... on HiveProfile {
+                        name
+                        images {
+                          avatar
+                        }
+                      }
+                    }
+                  }
+                  body
+                  permlink
+                  created_at
+                  children {
+                    stats {
+                      num_comments
+                      num_votes
+                      total_hive_reward
+                    }
+                    author {
+                      username
+                      profile {
+                        ... on HiveProfile {
+                          name
+                          images {
+                            avatar
+                          }
+                        }
+                      }
+                    }
+                    body
+                    permlink
+                    created_at
+                    children {
+                      stats {
+                        num_comments
+                        num_votes
+                        total_hive_reward
+                      }
+                      author {
+                        username
+                        profile {
+                          ... on HiveProfile {
+                            name
+                            images {
+                              avatar
+                            }
+                          }
+                        }
+                      }
+                      body
+                      permlink
+                      created_at
+                      children {
+                        stats {
+                          num_comments
+                        }
+                        author {
+                          username
+                          profile {
+                            ... on HiveProfile {
+                              name
+                              images {
+                                avatar
+                              }
+                            }
+                          }
+                        }
+                        body
+                        permlink
+                        created_at
+                        children {
+                          stats {
+                            num_comments
+                            num_votes
+                            total_hive_reward
+                          }
+                          author {
+                            username
+                            profile {
+                              ... on HiveProfile {
+                                name
+                                images {
+                                  avatar
+                                }
+                              }
+                            }
+                          }
+                          body
+                          permlink
+                          created_at
+                          children {
+                            stats {
+                              num_comments
+                              num_votes
+                              total_hive_reward
+                            }
+                            author {
+                              username
+                              profile {
+                                ... on HiveProfile {
+                                  name
+                                  images {
+                                    avatar
+                                  }
+                                }
+                              }
+                            }
+                            body
+                            permlink
+                            created_at
+                            children {
+                              stats {
+                                num_comments
+                                num_votes
+                                total_hive_reward
+                              }
+                              author {
+                                username
+                                profile {
+                                  ... on HiveProfile {
+                                    name
+                                    images {
+                                      avatar
+                                    }
+                                  }
+                                }
+                              }
+                              body
+                              permlink
+                              created_at
+                              children {
+                                stats {
+                                  num_comments
+                                  num_votes
+                                  total_hive_reward
+                                }
+                                author {
+                                  username
+                                  profile {
+                                    ... on HiveProfile {
+                                      name
+                                      images {
+                                        avatar
+                                      }
+                                    }
+                                  }
+                                }
+                                body
+                                permlink
+                                created_at
+                                children {
+                                  stats {
+                                    num_comments
+                                    num_votes
+                                    total_hive_reward
+                                  }
+                                  author {
+                                    username
+                                    profile {
+                                      ... on HiveProfile {
+                                        name
+                                        images {
+                                          avatar
+                                        }
+                                      }
+                                    }
+                                  }
+                                  body
+                                  permlink
+                                  created_at
+                                  children {
+                                    stats {
+                                      num_comments
+                                      num_votes
+                                      total_hive_reward
+                                    }
+                                    author {
+                                      username
+                                      profile {
+                                        ... on HiveProfile {
+                                          name
+                                          images {
+                                            avatar
+                                          }
+                                        }
+                                      }
+                                    }
+                                    body
+                                    permlink
+                                    created_at
+                                    children {
+                                      stats {
+                                        num_comments
+                                        num_votes
+                                        total_hive_reward
+                                      }
+                                      author {
+                                        username
+                                        profile {
+                                          ... on HiveProfile {
+                                            name
+                                            images {
+                                              avatar
+                                            }
+                                          }
+                                        }
+                                      }
+                                      body
+                                      permlink
+                                      created_at
+                                      children {
+                                        stats {
+                                          num_comments
+                                          num_votes
+                                          total_hive_reward
+                                        }
+                                        author {
+                                          username
+                                          profile {
+                                            ... on HiveProfile {
+                                              name
+                                              images {
+                                                avatar
+                                              }
+                                            }
+                                          }
+                                        }
+                                        body
+                                        permlink
+                                        created_at
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
   }
 `;
+
 export const GET_LEADER_BOARD = gql`
   query MyQuery {
     leaderBoard {
@@ -620,9 +962,6 @@ export const FIRST_UPLOAD_FEED = gql`
   }
 `;
 
-
-
-
 export const NEW_CONTENT = gql`
   query MyQuery {
     socialFeed(spkvideo: { only: true, firstUpload: true }) {
@@ -660,3 +999,38 @@ export const NEW_CONTENT = gql`
     }
   }
 `;
+
+// export const GET_COMMENTS = gql`
+//   query CommentsInfo($permlink: String = "", $author: String = "") {
+//     socialPost(author: $author, permlink: $permlink) {
+//       ... on HivePost {
+//         children {
+//           ...CommentFields
+//         }
+//       }
+//     }
+//   }
+
+//   fragment CommentFields on HivePost {
+//     stats {
+//       num_comments
+//     }
+//     author {
+//       username
+//       profile {
+//         ... on HiveProfile {
+//           name
+//           images {
+//             avatar
+//           }
+//         }
+//       }
+//     }
+//     body
+//     permlink
+//     created_at
+//     children {
+//       ...CommentFields
+//     }
+//   }
+// `;

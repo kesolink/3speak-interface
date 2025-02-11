@@ -6,6 +6,7 @@ import { FaHeart } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 import PropTypes from "prop-types";
 import "./Cards.scss";
+import { useAppStore } from '../..//lib/store';
 
 import img from "../../assets/image/deleted.jpg"
 
@@ -21,12 +22,51 @@ function Cards({
   className = "",
   truncateLength = 65,
 }) {
+   const {user} = useAppStore();
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+
+  const filteredVideos = videos.filter(
+    (video) => !video.spkvideo?.thumbnail_url?.includes("https://media.3speak.tv")
+  );
+  
+
+  
 
   const voters = (numVotes) => (numVotes <= 0 ? 0 : numVotes);
   console.log(videos)
 
+   const handleVote = (username, permlink, weight = 10000) => {
+    if (window.hive_keychain) {
+      // const [author, postPermlink] = permlink.split("/"); // Split permlink into author and postPermlink
+      window.hive_keychain.requestBroadcast(
+        user,
+        [
+          [
+            "vote",
+            {
+              voter: user,
+              author: username,
+              permlink,
+              weight, // 10000 = 100%, 5000 = 50%
+            },
+          ],
+        ],
+        "Posting",
+        (response) => {
+          if (response.success) {
+            alert("Vote successful!");
+          } else {
+            alert(`Vote failed: ${response.message}`);
+          }
+        }
+      );
+    } else {
+      alert("Hive Keychain is not installed. Please install the extension.");
+    }
+  };
+  
+console.log(videos)
   // const aboutTextTruncate = (text, maxLength) =>
   //   text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
 
@@ -34,7 +74,7 @@ function Cards({
   // https://media.3speak.tv/jevmpseu/thumbnails/default.png
   return (
     <div className={`card-container ${className}`}>
-      {videos.map((video, index) => (
+      {filteredVideos.map((video, index) => (
         <Link
         to={`/watch?v=${video?.author?.username}/${video.permlink ?? "unknown"}`}
           className="card"
@@ -80,7 +120,7 @@ function Cards({
           <div className="bottom-action">
             <div className="wrap-left">
               <div className="wrap flex-div">
-                <IoChevronUpCircleOutline className="icon" />
+                <IoChevronUpCircleOutline className="icon" onClick={ (e) =>{ e.preventDefault(); handleVote(video.author.username, video.permlink)}} />
                 <span>${video.stats?.total_hive_reward.toFixed(2) ?? "0.00"}</span>
               </div>
               <span>|</span>

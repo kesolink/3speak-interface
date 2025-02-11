@@ -17,8 +17,50 @@ import dayjs from "dayjs";
 import BlogContent from "./BlogContent";
 import CommentSection from "./CommentSection";
 // import ReactPlayer from 'react-player';
+import { useAppStore } from '../..//lib/store';
+import { MdPeople } from "react-icons/md";
 
 const PlayVideo = ({ videoDetails, author, permlink }) => {
+  const {user} = useAppStore();
+  const [commentData, setCommentData] = useState("")
+
+  const handlePostComment = ()=>{
+    const parent_permlink = permlink 
+    const permlinks = `re-${parent_permlink}-${Date.now()}`;
+    if(window.hive_keychain){
+      window.hive_keychain.requestBroadcast(
+        user,
+        [
+          [
+            "comment",
+            {
+              parent_author: author,
+              parent_permlink,
+              author: user,
+              permlink: permlinks,
+              weight:  10000,
+              title: "",
+              body: commentData,
+              json_metadata: "{\"app\":\"3speak/new-version\"}",
+              __config: {"originalBody": null,"comment_options": {}},
+            },
+          ],
+        ],
+        "Posting",
+        (response) => {
+          if (response.success) {
+            alert("comment successful!");
+          } else {
+            alert(`comment failed: ${response.message}`);
+          }
+        }
+      )
+    } else {
+      alert("Hive Keychain is not installed. Please install the extension.");
+    }
+  }
+
+
   console.log(author);
 
   const {
@@ -43,6 +85,11 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
 
   const profile = getUserProfile.data?.profile;
   const content = videoDetails?.body.split("\n");
+  const tags = videoDetails?.tags?.slice(0, 7);
+  const comunity_name = videoDetails?.community?.title;
+
+  console.log("videoDetails=======>", videoDetails)
+  
 
   useEffect(() => {
     if (spkvideo?.play_url) {
@@ -59,23 +106,56 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
     return <div>Loadingg.......</div>;
   }
 
+
+
+  const handleVote = (username, permlink, weight = 10000) => {
+    if (window.hive_keychain) {
+      // const [author, postPermlink] = permlink.split("/"); // Split permlink into author and postPermlink
+      window.hive_keychain.requestBroadcast(
+        user,
+        [
+          [
+            "vote",
+            {
+              voter: user,
+              author: username,
+              permlink,
+              weight, // 10000 = 100%, 5000 = 50%
+            },
+          ],
+        ],
+        "Posting",
+        (response) => {
+          if (response.success) {
+            alert("Vote successful!");
+          } else {
+            alert(`Vote failed: ${response.message}`);
+          }
+        }
+      );
+    } else {
+      alert("Hive Keychain is not installed. Please install the extension.");
+    }
+  };
+
   console.log(videoDetails);
 
   return (
     <div className="play-video">
-      <ReactJWPlayer
-        licenseKey="64HPbvSQorQcd52B8XFuhMtEoitbvY/EXJmMBfKcXZQU2Rnn"
-        customProps={{
-          playbackRateControls: true,
-          autostart: false,
-        }}
-        file={`${videoUrlSelected}`}
-        image={`${spkvideo?.thumbnail_url}`}
-        id="botr_UVQWMA4o_kGWxh33Q_div"
-        playerId={"1242424242"}
-        playerScript="https://cdn.jwplayer.com/libraries/HT7Dts3H.js"
-      ></ReactJWPlayer>
-      {/* <ReactPlayer 
+      <div className="top-container">
+        <ReactJWPlayer
+          licenseKey="64HPbvSQorQcd52B8XFuhMtEoitbvY/EXJmMBfKcXZQU2Rnn"
+          customProps={{
+            playbackRateControls: true,
+            autostart: false,
+          }}
+          file={`${videoUrlSelected}`}
+          image={`${spkvideo?.thumbnail_url}`}
+          id="botr_UVQWMA4o_kGWxh33Q_div"
+          playerId={"1242424242"}
+          playerScript="https://cdn.jwplayer.com/libraries/HT7Dts3H.js"
+        ></ReactJWPlayer>
+        {/* <ReactPlayer 
         url={`${videoUrlSelected}`}
         controls 
         playing={false} 
@@ -84,35 +164,46 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
         height="100%" 
       /> */}
 
-      <h3>{videoDetails?.title}</h3>
-      <div className="play-video-info">
-        <div className="wrap-left">
-          <div className="wrap">
-            <FaEye />
-            <span>23</span>
+        <h3>{videoDetails?.title}</h3>
+        <div className="tag-wrapper">
+          {tags.map((tags, index) => (
+            <span key={index}>{tags}</span>
+          ))}
+        </div>
+        <div className="community-title-wrap">
+          <MdPeople />
+          <span>{comunity_name}</span>
+        </div>
+        <div className="play-video-info">
+          <div className="wrap-left">
+            <div className="wrap">
+              <FaEye />
+              <span>23</span>
+            </div>
+            <div className="wrap">
+              <LuTimer />
+              <span>{dayjs(videoDetails?.created_at).fromNow()}</span>
+            </div>
           </div>
-          <div className="wrap">
-            <LuTimer />
-            <span>{dayjs(videoDetails?.created_at).fromNow()}</span>
+          <div className="wrap-right">
+            <span className="wrap">
+              <BiLike className="icon" onClick={()=>{handleVote(author, permlink)}} />
+              <span>{videoDetails?.stats.num_votes}</span>
+            </span>
+            <span className="wrap">
+              <BiDislike className="icon" />
+              <span>0</span>
+            </span>
+            <span className="wrap">
+              <GiTwoCoins className="icon" />
+              <span>${videoDetails?.stats.total_hive_reward.toFixed(2)}</span>
+            </span>
+            <span>Reply</span>
           </div>
         </div>
-        <div className="wrap-right">
-          <span className="wrap">
-            <BiLike className="icon" />
-            <span>{videoDetails?.stats.num_votes}</span>
-          </span>
-          <span className="wrap">
-            <BiDislike className="icon" />
-            <span>0</span>
-          </span>
-          <span className="wrap">
-            <GiTwoCoins className="icon" />
-            <span>${videoDetails?.stats.total_hive_reward.toFixed(2)}</span>
-          </span>
-          <span>Reply</span>
-        </div>
+        {/* <hr /> */}
       </div>
-      <hr />
+
       <div className="big-mid-wrap"></div>
       <div className="publisher">
         <img src={profile?.images?.avatar} alt="" />
@@ -129,6 +220,19 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
           // dangerouslySetInnerHTML={{ __html: videoDetails?.body }}
         >
           <BlogContent content={content} />
+        </div>
+      </div>
+
+      <div className="add-comment-wrap">
+        <span>Reply:</span>
+        <textarea
+          className="textarea-box"
+          value={commentData}
+          onChange={(e) => setCommentData(e.target.value)}
+          placeholder="Write your comment here..."
+        />
+        <div className="btn-wrap">
+          <button onClick={handlePostComment}>Comment</button>
         </div>
       </div>
 
