@@ -63,9 +63,18 @@
                     display: inline-flex;
                     align-items: center;
                     margin-left: 10px;
+                    position: relative;
                     .icon{
                         font-size: 20px;
                         margin-right: 4px;   
+                    }
+                    span{
+                        cursor: pointer;
+                    }
+                    .amount{
+                        border: none;
+                        background-color: transparent;
+                        cursor: pointer;
                     }
                 
             }

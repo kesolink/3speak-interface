@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import "./PlayVideo.scss";
 import { FaEye } from "react-icons/fa";
-
 import { LuTimer } from "react-icons/lu";
 import { BiDislike, BiLike } from "react-icons/bi";
 import { GiTwoCoins } from "react-icons/gi";
@@ -16,18 +15,54 @@ import ReactJWPlayer from "react-jw-player";
 import dayjs from "dayjs";
 import BlogContent from "./BlogContent";
 import CommentSection from "./CommentSection";
-// import ReactPlayer from 'react-player';
 import { useAppStore } from '../..//lib/store';
 import { MdPeople } from "react-icons/md";
+import { getUersContent } from "../../utils/hiveUtils";
+import ToolTip from "../tooltip/ToolTip";
 
 const PlayVideo = ({ videoDetails, author, permlink }) => {
-  const {user} = useAppStore();
-  const [commentData, setCommentData] = useState("")
+  const { user } = useAppStore();
+  const [commentData, setCommentData] = useState("");
+  const [openTooltip, setOpenToolTip] = useState(false);
+  const [tooltipVoters, setTooltipVoters] = useState([]);
 
-  const handlePostComment = ()=>{
-    const parent_permlink = permlink 
+  // Define getTooltipVoters BEFORE useEffect
+  const getTooltipVoters = async () => {
+    try {
+      const data = await getUersContent(author, permlink);
+      if (!data) {
+        console.log("Post not found");
+        return [];
+      }
+
+      console.log(data)
+      // 9126375037
+
+      const topVotes = data.active_votes
+        .sort((a, b) => parseInt(b.rshares) - parseInt(a.rshares))
+        .slice(0, 10)
+        .map(vote => ({
+          username: vote.voter,
+          reward: parseFloat(vote.rshares) / 1e12 // Simplified reward estimation
+        }));
+
+      console.log(topVotes);
+      setTooltipVoters(topVotes);
+    } catch (error) {
+      console.error("Error fetching upvotes:", error);
+      return [];
+    }
+  };
+
+  // Call getTooltipVoters in useEffect
+  useEffect(() => {
+    getTooltipVoters();
+  }, [author, permlink]); // Add author and permlink as dependencies
+
+  const handlePostComment = () => {
+    const parent_permlink = permlink;
     const permlinks = `re-${parent_permlink}-${Date.now()}`;
-    if(window.hive_keychain){
+    if (window.hive_keychain) {
       window.hive_keychain.requestBroadcast(
         user,
         [
@@ -38,44 +73,40 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
               parent_permlink,
               author: user,
               permlink: permlinks,
-              weight:  10000,
+              weight: 10000,
               title: "",
               body: commentData,
               json_metadata: "{\"app\":\"3speak/new-version\"}",
-              __config: {"originalBody": null,"comment_options": {}},
+              __config: { originalBody: null, comment_options: {} },
             },
           ],
         ],
         "Posting",
         (response) => {
           if (response.success) {
-            alert("comment successful!");
+            alert("Comment successful!");
           } else {
-            alert(`comment failed: ${response.message}`);
+            alert(`Comment failed: ${response.message}`);
           }
         }
-      )
+      );
     } else {
       alert("Hive Keychain is not installed. Please install the extension.");
     }
-  }
-
-
-  console.log(author);
+  };
 
   const {
     data: getVideo,
     loading,
     error,
   } = useQuery(GET_VIDEO, { variables: { author, permlink }, ssr: true });
-  console.log(getVideo);
   const spkvideo = getVideo?.socialPost.spkvideo;
   const [videoUrlSelected, setVideoUrlSelected] = useState(null);
 
   const { data: followData, loading: followLoading } = useQuery(
     GET_TOTAL_COUNT_OF_FOLLOWING,
     {
-      variables: { id: videoDetails?.author?.id || "" }, // use default value to avoid issues
+      variables: { id: videoDetails?.author?.id || "" },
     }
   );
 
@@ -87,9 +118,6 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
   const content = videoDetails?.body.split("\n");
   const tags = videoDetails?.tags?.slice(0, 7);
   const comunity_name = videoDetails?.community?.title;
-
-  console.log("videoDetails=======>", videoDetails)
-  
 
   useEffect(() => {
     if (spkvideo?.play_url) {
@@ -103,14 +131,11 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
   }, [spkvideo]);
 
   if (loading) {
-    return <div>Loadingg.......</div>;
+    return <div>Loading...</div>;
   }
-
-
 
   const handleVote = (username, permlink, weight = 10000) => {
     if (window.hive_keychain) {
-      // const [author, postPermlink] = permlink.split("/"); // Split permlink into author and postPermlink
       window.hive_keychain.requestBroadcast(
         user,
         [
@@ -138,7 +163,7 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
     }
   };
 
-  console.log(videoDetails);
+  // console.log(videoDetails);
 
   return (
     <div className="play-video">
@@ -155,14 +180,6 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
           playerId={"1242424242"}
           playerScript="https://cdn.jwplayer.com/libraries/HT7Dts3H.js"
         ></ReactJWPlayer>
-        {/* <ReactPlayer 
-        url={`${videoUrlSelected}`}
-        controls 
-        playing={false} 
-        light={spkvideo?.thumbnail_url} // This shows the thumbnail
-        width="100%" 
-        height="100%" 
-      /> */}
 
         <h3>{videoDetails?.title}</h3>
         <div className="tag-wrapper">
@@ -187,9 +204,11 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
           </div>
           <div className="wrap-right">
             <span className="wrap">
-              <BiLike className="icon" onClick={()=>{handleVote(author, permlink)}} />
-              <span>{videoDetails?.stats.num_votes}</span>
+              <BiLike className="icon" onClick={() => { handleVote(author, permlink) }} />
+              <div className="amount" onMouseEnter={() => setOpenToolTip(true)} onMouseLeave={() => setOpenToolTip(false)}>{videoDetails?.stats.num_votes}</div>
+              {openTooltip && <ToolTip tooltipVoters={tooltipVoters} />}
             </span>
+
             <span className="wrap">
               <BiDislike className="icon" />
               <span>0</span>
@@ -201,7 +220,6 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
             <span>Reply</span>
           </div>
         </div>
-        {/* <hr /> */}
       </div>
 
       <div className="big-mid-wrap"></div>
@@ -211,15 +229,12 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
           <p>{videoDetails?.author?.id}</p>
           <span>{followData?.follows?.followers_count} Followers</span>
         </div>
-        <button>Follow </button>
+        <button>Follow</button>
       </div>
 
       <div className="description-wrap">
-        <div
-          className="blog-content"
-          // dangerouslySetInnerHTML={{ __html: videoDetails?.body }}
-        >
-          <BlogContent content={content} />
+        <div className="blog-content">
+          <BlogContent author={author} permlink={permlink} />
         </div>
       </div>
 

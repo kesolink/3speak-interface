@@ -42,6 +42,8 @@ function TestStudio() {
   const [declineRewards, SetDeclineRewards] = useState(false)
   const [rewardPowerup, setRewardPowerup  ] = useState(false)
   const [communitiesData, setCommunitiesData] = useState([]);
+  
+  console.log("accesstokrn=====>", accessToken)
 
   useEffect(() => {
     const fetchCommunities = async () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./CommentSection.scss";
 import { GiTwoCoins } from 'react-icons/gi';
 import { BiDislike, BiLike } from 'react-icons/bi';
@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client';
 import { GET_COMMENTS } from '../../graphql/queries';
 import dayjs from 'dayjs';
 import { useAppStore } from '../../lib/store';
+import { renderPostBody } from "@ecency/render-helper";
 // import { Client } from "@hiveio/dhive";
 
 function CommentSection({ videoDetails, author, permlink }) {
@@ -35,8 +36,25 @@ function CommentSection({ videoDetails, author, permlink }) {
   const [commentInfo, setCommentInfo] = useState("");
   const [activeReply, setActiveReply] = useState(null);
   const [singleData, setSingleData] = useState(null);
+  const [openTooltip, setOpenToolTip] = useState(false)
+  const [tooltipVoters, setTooltipVoters] = useState([]);
   const commentData = data?.socialPost?.children || [];
-  console.log("commentData=====>", commentData)
+  // console.log("commentData=====>", commentData)
+  const [renderedContent, setRenderedContent] = useState(null);
+
+
+
+  const processedBody = (content) => {
+    if (!content) return ""; // Ensure there's content before processing
+  
+    // console.log("Raw content:", content);
+  
+    // Convert to HTML using @ecency/render-helper
+    const renderedHTML = renderPostBody(content, false);
+    // console.log("Rendered HTML:", renderedHTML);
+  
+    return renderedHTML; // Directly return the processed HTML
+  };
 
   const handlePostComment = () => {
     if (!singleData) return;
@@ -111,7 +129,7 @@ function CommentSection({ videoDetails, author, permlink }) {
       alert("Hive Keychain is not installed. Please install the extension.");
     }
   };
-console.log(videoDetails)
+// console.log(videoDetails)
   return (
     <div className="vid-comment-wrap">
       <h4>{videoDetails?.stats.num_comments} Comments</h4>
@@ -127,6 +145,7 @@ console.log(videoDetails)
           handlePostComment={handlePostComment}
           depth={0} // Track nesting level
           handleVote={handleVote}
+          processedBody={processedBody}
         />
       ))}
     </div>
@@ -134,7 +153,7 @@ console.log(videoDetails)
 }
 
 // Recursive Comment Component for Nested Replies
-function Comment({ comment, activeReply, setActiveReply, setCommentInfo, commentInfo, setSingleData, handlePostComment, depth, handleVote }) {
+function Comment({ comment, activeReply, setActiveReply, processedBody, setCommentInfo, commentInfo, setSingleData, handlePostComment, depth, handleVote }) {
   return (
     <div className="comment-container" style={{ marginLeft: depth > 0 ? "40px" : "0px" }}>
       <div className="comment">
@@ -144,7 +163,7 @@ function Comment({ comment, activeReply, setActiveReply, setCommentInfo, comment
             {comment?.author?.profile.name || comment?.author?.username}
             <span>{dayjs(comment?.created_at).fromNow()}</span>
           </h3>
-          <p dangerouslySetInnerHTML={{ __html: comment?.body }} />
+          <p dangerouslySetInnerHTML={{ __html: processedBody(comment?.body || "") }} />
           <div className="comment-action">
             <div className="wrap"><BiLike onClick={()=> {handleVote(comment?.author?.username, comment.permlink);}} /> <span>{comment?.stats?.num_likes ?? 0}</span></div>
             <div className="wrap"><BiDislike /> <span>{comment?.stats?.num_dislikes ?? 0}</span></div>
@@ -186,6 +205,7 @@ function Comment({ comment, activeReply, setActiveReply, setCommentInfo, comment
               handlePostComment={handlePostComment}
               depth={depth + 1} // Increase depth for indentation
               handleVote={handleVote}
+              processedBody={processedBody} 
             />
           ))}
         </div>
