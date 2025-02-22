@@ -49,7 +49,6 @@ const BlogPost = ({ author, permlink}) => {
 
       try {
         // Render the content using @ecency/render-heper
-        // console.log(content)
         const renderedHTML = renderPostBody(contentString, false);
         console.log("Rendered HTML Output:", renderedHTML);
         setRenderedContent(renderedHTML);
