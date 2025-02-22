@@ -17,8 +17,31 @@ import { IoChevronUpCircleOutline } from "react-icons/io5"
 import { GiEternalLove } from "react-icons/gi"
 // import { FaComment, FaRetweet, FaVideo } from "react-icons/fa"
 import CommunitiesTags from "../communities-tags/CommunitiesTags"
+import { useEffect, useState } from "react"
+import Auth_modal from "../modal/Auth_modal"
+import { has3SpeakPostAuth } from '../../utils/hiveUtils';
+import { useAppStore } from '../../lib/store';
 function Feed() {
+  const [isOpen, setIsOpen] = useState(false)
+  const {user} = useAppStore();
+
+  useEffect(()=>{
+    checkPostAuth(user);
+  },[])
+
+  const toggleUploadModal = ()=>{
+    setIsOpen( (prev)=> !prev)
+  }
+
+    async function checkPostAuth(username) {
+      const hasAuth = await has3SpeakPostAuth(username);
+      if (!hasAuth) {
+        setIsOpen(true);
+      }
+    }
+
   return (
+    <>
     <>
     <CommunitiesTags />
 
@@ -551,143 +574,9 @@ function Feed() {
             <p> 2 days ago</p>
         </div>
       </Link>
-      
-      {/* <div className="card">
-        <img src={thumb2} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb3} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb4} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb5} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb1} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb6} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb7} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb1} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb2} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb3} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb4} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb5} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb1} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb6} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumb7} alt="" />
-        <h2>
-          Best in 3speak channel video creation is kesolink. we vlog for fun and
-          we are happy about that.
-        </h2>
-        <h3>GreatStack</h3>
-        <p>15k view &bull; 2 days ago</p>
-      </div> */}
     </div>
+    </>
+    {isOpen && <Auth_modal  isOpen={isOpen} close={toggleUploadModal} />}
     </>
   );
 }

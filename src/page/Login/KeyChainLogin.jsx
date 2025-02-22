@@ -6,6 +6,7 @@ import keychainImg from '../../assets/image/keychain.png';
 import { useNavigate } from 'react-router-dom';
 import { LOCAL_STORAGE_ACCESS_TOKEN_KEY, LOCAL_STORAGE_USER_ID_KEY } from '../../hooks/localStorageKeys';
 import { useAppStore } from '../../lib/store';
+// import { has3SpeakPostAuth } from '../../utils/hiveUtils';
 function KeyChainLogin() {
   const client = axios.create({});
   const { initializeAuth, setActiveUser } = useAppStore();
@@ -13,6 +14,16 @@ function KeyChainLogin() {
   const [username, setUsername] = useState('');
   const [accessToken, setAccessToken] = useState("");
   const navigate = useNavigate();
+
+
+//   async function checkPostAuth(username) {
+//     const hasAuth = await has3SpeakPostAuth(username);
+//     if (hasAuth) {
+//         console.log(`${username} has post authorization for 3Speak.`);
+//     } else {
+//         console.log(`${username} has NOT granted post authorization to 3Speak.`);
+//     }
+// }
 
   async function logMe() {
     try {
@@ -43,6 +54,7 @@ function KeyChainLogin() {
               initializeAuth()
               setActiveUser()
               navigate("/");
+              // checkPostAuth("some-hive-user");
 
           }
         }
@@ -53,6 +65,8 @@ function KeyChainLogin() {
       throw err;
     }
   }
+
+  
   return (
     <div className="login-container">
       <div className="container-wrapper">
