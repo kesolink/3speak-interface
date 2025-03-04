@@ -26,14 +26,14 @@ const Sidebar = ({sidebar}) => {
         </Link>
         
         <Link to="/trend" className="side-link">
-          <FaFire className="icon" /> <span>Trending Contnet</span>
-        </Link>
+          <FaFire className="icon" /> <span>Trending Content</span>
+        </Link> 
         <Link to="/new" className="side-link">
           <LuNewspaper className="icon" /> <span>New Content</span>
         </Link>
-        <div className="side-link">
+        <Link to="/communities" className="side-link">
           <MdOutlineDynamicFeed className="icon" /> <span>Communities</span>
-        </div>
+        </Link>
         <div className="side-link">
           <MdOutlineLeaderboard className="icon" /> <span>Leaderboard</span>
         </div>

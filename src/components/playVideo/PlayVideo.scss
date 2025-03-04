@@ -10,7 +10,25 @@
         padding: 10px;
         background-color: #fff;
         border-radius: 10px;
-        box-shadow: 0 1px 6px 0 #20212447;;
+        box-shadow: 0 1px 6px 0 #20212447;
+        .video-loader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 450px; // adjust as needed
+            font-size: 18px;
+            color: #555;
+            background-color: #000;
+            width: 100%;
+            border-radius: 8px;
+
+            .spinner {
+    font-size: 3rem;
+    animation: spin 1s linear infinite;
+    color: var(--primary-color);
+  }
+          }
+          
         h3{
             margin-top: 10px;
             font-weight: 600;
@@ -231,6 +249,10 @@
         }
 
 
+      }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
       }
 
 

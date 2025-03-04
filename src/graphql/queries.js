@@ -68,6 +68,10 @@ export const GET_VIDEO_DETAILS = gql`
   }
 `;
 
+
+
+
+
 //TODO: why its not working when removing the repeated code
 // export const GET_COMMENTS = gql`
 //   query CommentsInfo($permlink: String = "", $author: String = "") {
@@ -712,6 +716,55 @@ export const GET_PROFILE = gql`
   }
 `;
 
+// export const GET_COMMUNITIES = gql`
+//   query MyQuery($id: String) {
+//     community(id: $id) {
+//       about
+//       created_at
+//       is_nsfw
+//       lang
+//       subscribers
+//       title
+//       trendingFeed {
+//         items {
+//           author {
+//             id
+//           }
+//           ... on HivePost {
+//             parent_author
+//             parent_permlink
+//             community
+//             title
+//             author {
+//               username
+//               id
+//             }
+//             spkvideo
+//           }
+//         }
+//       }
+//       latestFeed {
+//         items {
+//           author {
+//             id
+//           }
+//           ... on HivePost {
+//             parent_author
+//             parent_permlink
+//             author {
+//               id
+//               username
+//             }
+//             community
+//             spkvideo
+//             title
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
+
 export const GET_COMMUNITIES = gql`
   query MyQuery($id: String) {
     community(id: $id) {
@@ -736,6 +789,12 @@ export const GET_COMMUNITIES = gql`
               id
             }
             spkvideo
+            stats {
+              num_comments
+              num_votes
+              total_hive_reward
+            }
+            created_at # Add created_at here
           }
         }
       }
@@ -754,13 +813,19 @@ export const GET_COMMUNITIES = gql`
             community
             spkvideo
             title
+            stats {
+              num_comments
+              num_votes
+              total_hive_reward
+            }
+            created_at # Add created_at here
+            permlink # Add permlink here
           }
         }
       }
     }
   }
 `;
-
 export const GET_FOLLOWS = gql`
   query MyQuery {
     follows(id: "") {

@@ -8,6 +8,8 @@ import App from './App';
 import './index.css';
 import client from './lib/apolloClient';
 import store from '../src/redux/Store'; // Importing the Redux store (replace with your store file path)
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // import { Buffer } from 'buffer';
 // window.Buffer = Buffer;
@@ -18,6 +20,7 @@ createRoot(document.getElementById('root')).render(
       <ApolloProvider client={client}>
         <Provider store={store}> {/* Wrap the app with the Redux Provider */}
           <App />
+          <ToastContainer className="custom-toast-body"/>
         </Provider>
       </ApolloProvider>
     </BrowserRouter>

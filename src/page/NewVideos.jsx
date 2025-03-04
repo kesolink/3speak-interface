@@ -18,6 +18,7 @@ import "./FirstUploads.scss"
 import { useQuery } from '@apollo/client'
 import { NEW_CONTENT } from '../graphql/queries'
 import Cards from '../components/Cards/Cards'
+import CardSkeleton from '../components/Cards/CardSkeleton'
 const NewVideos = () => {
   const { data, loading, error } = useQuery(NEW_CONTENT );
   console.log(data)
@@ -25,10 +26,10 @@ const NewVideos = () => {
   return (
     <div className='firstupload-container'>
         <div className='headers'>New VIDEOS</div>
-        <Cards videos={videos} 
+        {loading? <CardSkeleton/> :<Cards videos={videos} 
               loading={loading} 
               error={error} 
-              className="custom-video-feed" />
+              className="custom-video-feed" />}
     </div>
   )
 }
