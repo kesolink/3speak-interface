@@ -26,6 +26,9 @@ img{
   display: flex;
   align-items: center;
 }
+.custom-toast-body {
+  font-size: 15px; /* Adjust size as needed */
+}
 
 /* button {
   border-radius: 8px;

@@ -3,7 +3,7 @@ import { renderPostBody } from "@ecency/render-helper";
 import {getUersContent} from "../../utils/hiveUtils"
 
 
-const BlogPost = ({ author, permlink}) => {
+const BlogContent = ({ author, permlink}) => {
   const [content, setContent] = useState("");
   const [renderedContent, setRenderedContent] = useState("");
 
@@ -68,4 +68,4 @@ const BlogPost = ({ author, permlink}) => {
   );
 };
 
-export default BlogPost;
+export default BlogContent;

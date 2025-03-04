@@ -2,13 +2,15 @@ import React from 'react'
 import "./CardSkeleton.scss"
 function CardSkeleton() {
   return (
-    <div className='card-Ske-container'>
-        <div className="card-ske">
-            <div className="img-ske">
-                
-            </div>
-        </div>
-    </div>
+    <div className="feed-wrap-skeleton-in">
+        {[...Array(50)].map((i) => (
+          <div key={i} className="skeleton-card">
+            <div className="skeleton video-thumbnail-skeleton"></div>
+            <div className="skeleton line-skeleton"></div>
+            <div className="skeleton line-skeleton"></div>
+          </div>
+        ))}
+      </div>
   )
 }
 

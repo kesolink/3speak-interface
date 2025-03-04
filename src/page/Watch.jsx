@@ -18,6 +18,8 @@ function Watch() {
     variables: { author, permlink },
   });
 
+  console.log(videoData)
+
   const videoDetails = videoData?.socialPost;
 
   const { data: suggestionsData, loading: suggestionsLoading, error: suggestionsError } = useQuery(GET_RELATED, {

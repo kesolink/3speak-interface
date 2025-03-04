@@ -26,8 +26,15 @@ function Cards({
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
+  // const filteredVideos = videos.filter(
+  //   (video) => !video.spkvideo?.thumbnail_url?.includes("https://media.3speak.tv")
+  // );
+
   const filteredVideos = videos.filter(
-    (video) => !video.spkvideo?.thumbnail_url?.includes("https://media.3speak.tv")
+    (video) =>
+      video.spkvideo !== null && // Ensure spkvideo is not null
+      video.spkvideo !== undefined && // Ensure spkvideo is not undefined
+      !video.spkvideo.thumbnail_url?.includes("https://media.3speak.tv") // Ensure thumbnail_url does not include the specified string
   );
   
 

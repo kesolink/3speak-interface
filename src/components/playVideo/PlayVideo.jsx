@@ -19,12 +19,14 @@ import { useAppStore } from '../..//lib/store';
 import { MdPeople } from "react-icons/md";
 import { getUersContent } from "../../utils/hiveUtils";
 import ToolTip from "../tooltip/ToolTip";
+import { ImSpinner9 } from "react-icons/im";
 
 const PlayVideo = ({ videoDetails, author, permlink }) => {
   const { user } = useAppStore();
   const [commentData, setCommentData] = useState("");
   const [openTooltip, setOpenToolTip] = useState(false);
   const [tooltipVoters, setTooltipVoters] = useState([]);
+  const [voted, setVoted] = useState(null)
 
   // Define getTooltipVoters BEFORE useEffect
   const getTooltipVoters = async () => {
@@ -34,6 +36,8 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
         console.log("Post not found");
         return [];
       }
+
+      if (data.active_votes )
 
       console.log(data)
       // 9126375037
@@ -168,7 +172,7 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
   return (
     <div className="play-video">
       <div className="top-container">
-        <ReactJWPlayer
+        {/* <ReactJWPlayer
           licenseKey="64HPbvSQorQcd52B8XFuhMtEoitbvY/EXJmMBfKcXZQU2Rnn"
           customProps={{
             playbackRateControls: true,
@@ -179,7 +183,26 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
           id="botr_UVQWMA4o_kGWxh33Q_div"
           playerId={"1242424242"}
           playerScript="https://cdn.jwplayer.com/libraries/HT7Dts3H.js"
-        ></ReactJWPlayer>
+        ></ReactJWPlayer> */}
+
+{videoUrlSelected ? (
+      <ReactJWPlayer
+        licenseKey="64HPbvSQorQcd52B8XFuhMtEoitbvY/EXJmMBfKcXZQU2Rnn"
+        customProps={{
+          playbackRateControls: true,
+          autostart: false,
+        }}
+        file={videoUrlSelected}
+        image={spkvideo?.thumbnail_url}
+        id="botr_UVQWMA4o_kGWxh33Q_div"
+        playerId="1242424242"
+        playerScript="https://cdn.jwplayer.com/libraries/HT7Dts3H.js"
+      />
+    ) : (
+      <div className="video-loader">
+        <ImSpinner9 className="spinner" />
+      </div>
+    )}
 
         <h3>{videoDetails?.title}</h3>
         <div className="tag-wrapper">

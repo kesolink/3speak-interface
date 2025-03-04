@@ -29,7 +29,7 @@ function CommunitieModal({ isOpen, data, close, setCommunity }) {
     <div className={`modal ${isOpen ? "open" : ""}`}>
       <div className="overlay" onClick={close}></div>
       <div
-        className={`modal-content ${isOpen ? "open" : ""}`}
+        className={`modal-content  ${isOpen ? "open" : ""}`}
         onClick={(e) => e.stopPropagation()} // Prevent click on modal from closing it
       >
         <div className="modal-header">

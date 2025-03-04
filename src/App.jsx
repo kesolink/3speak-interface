@@ -20,6 +20,9 @@ import { useEffect } from 'react'
 import ProfileNav from './components/nav/ProfileNav'
 import StudioPage from './components/studio/studioPage'
 import TestStudio from './components/studio/TestStudio'
+import CommunitiesRender from './components/Communities/CommunitiesRender'
+import CommunityPage from './components/Communities/CommunityPage'
+
 
 function App() {
   const {initializeAuth, authenticated } = useAppStore();
@@ -56,6 +59,8 @@ function App() {
          <Route path="/newlogin" element={<LoginNew />} />
          <Route path="/studio" element={<StudioPage />} />
          <Route path="/teststudio" element={<TestStudio />} />
+         <Route path="/communities" element={<CommunitiesRender />} />
+         <Route path="/community/:communityName" element={<CommunityPage />} />
        </Routes>
       </div>
        <ProfileNav isVisible={profileNavVisible} onclose={toggleProfileNav} />
