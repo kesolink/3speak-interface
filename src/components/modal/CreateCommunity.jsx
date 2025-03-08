@@ -368,7 +368,7 @@ const CreateCommunity = ({ isOpen, close}) => {
                     </h3>
                   </div>
                   <a className="breakaway" href="https://breakaway.community/docker-setup" target="_blank" rel="noopener noreferrer" >
-                    <button>Setup your breakaway community</button>
+                    <button>Setup your breakaway platform</button>
                   </a>
                 </div>
             )}

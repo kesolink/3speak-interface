@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { renderPostBody } from "@ecency/render-helper";
 import {getUersContent} from "../../utils/hiveUtils"
+import "./BlogContent.scss"
 
 
 const BlogContent = ({ author, permlink}) => {
@@ -62,7 +63,7 @@ const BlogContent = ({ author, permlink}) => {
   // Render the processed content
   return (
     <div
-      className="markdown-content"
+      className="markdown-view"
       dangerouslySetInnerHTML={{ __html: renderedContent }}
     />
   );

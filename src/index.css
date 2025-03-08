@@ -20,6 +20,8 @@ button{
 
 img{
   cursor: pointer;
+  /* width: 100%; */
+      /* width: fit-content; */
 }
 
 .flex-div{
