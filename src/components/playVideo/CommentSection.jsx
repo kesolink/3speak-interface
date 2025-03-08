@@ -7,6 +7,7 @@ import { GET_COMMENTS } from '../../graphql/queries';
 import dayjs from 'dayjs';
 import { useAppStore } from '../../lib/store';
 import { renderPostBody } from "@ecency/render-helper";
+import "./BlogContent.scss"
 // import { Client } from "@hiveio/dhive";
 
 function CommentSection({ videoDetails, author, permlink }) {
@@ -160,10 +161,10 @@ function Comment({ comment, activeReply, setActiveReply, processedBody, setComme
         <img src={comment?.author?.profile?.images?.avatar || 'https://via.placeholder.com/40'} alt="Author Avatar" />
         <div>
           <h3>
-            {comment?.author?.profile.name || comment?.author?.username}
-            <span>{dayjs(comment?.created_at).fromNow()}</span>
+            {comment?.author?.username}
+            <span >{dayjs(comment?.created_at).fromNow()}</span>
           </h3>
-          <p dangerouslySetInnerHTML={{ __html: processedBody(comment?.body || "") }} />
+          <p className="markdown-view" dangerouslySetInnerHTML={{ __html: processedBody(comment?.body || "") }} />
           <div className="comment-action">
             <div className="wrap"><BiLike onClick={()=> {handleVote(comment?.author?.username, comment.permlink);}} /> <span>{comment?.stats?.num_likes ?? 0}</span></div>
             <div className="wrap"><BiDislike /> <span>{comment?.stats?.num_dislikes ?? 0}</span></div>

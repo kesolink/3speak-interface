@@ -5,7 +5,7 @@ import keychain from '../../assets/image/keychain.png';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 // import dhive from "@hiveio/dhive";
-// import hive from '@hiveio/hive-js';
+import hive from '@hiveio/hive-js';
 // import hive from '@hiveio/hive-js/dist/hivejs.min.js';
 
 // import { Buffer } from 'buffer'
@@ -22,32 +22,32 @@ function Login() {
   const studioEndPoint = "https://studio.3speak.tv";
   const client = axios.create({});
 
-  // async function logMe() {
-  //     try {
-  //       let response = await client.get(
-  //         `${studioEndPoint}/mobile/login?username=${username}`,
-  //         {
-  //           withCredentials: false,
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       );
-  //       console.log(`Response: ${JSON.stringify(response)}`);
-  //       const memo = response.data.memo;
-  //       console.log(`Memo - ${response.data.memo}`);
+  async function logMe() {
+      try {
+        let response = await client.get(
+          `${studioEndPoint}/mobile/login?username=${username}`,
+          {
+            withCredentials: false,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(`Response: ${JSON.stringify(response)}`);
+        const memo = response.data.memo;
+        console.log(`Memo - ${response.data.memo}`);
        
-  //       let access_token = hive.memo.decode(postingKey, memo);
-  //       // let access_token = dhive?.memo.decode(postingKey, memo);
-  //       console.log(access_token)
-  //       access_token = access_token.replace("#", "");
-  //       console.log(`Decrypted ${access_token}\n\n`);
-  //     //   setAccessToken(access_token);
-  //     } catch (err) {
-  //       console.log(err);
-  //       throw err;
-  //     }
-  //   }
+        let access_token = hive.memo.decode(postingKey, memo);
+        // let access_token = dhive?.memo.decode(postingKey, memo);
+        console.log(access_token)
+        access_token = access_token.replace("#", "");
+        console.log(`Decrypted ${access_token}\n\n`);
+      //   setAccessToken(access_token);
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    }
 
   // const handleLogin = (e) => {
   //   e.preventDefault();
@@ -82,7 +82,7 @@ function Login() {
 
           <span>We don't store your private keys.</span>
 
-          <button  >Login</button>
+          <button onClick={logMe} >Login</button>
 
           <div className="or-wrap">
             <div className="or-divider">
