@@ -43,7 +43,7 @@ function ProfileNav({isVisible, onclose}) {
             </div>
            </div>
            <div className="list-wrap">
-          <Link  className="wrap">
+          <Link to="/profile"  className="wrap">
             <IoMdPerson className="icon" /> <span>My Channel</span>
           </Link>
           <Link  className="wrap">

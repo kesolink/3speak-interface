@@ -34,9 +34,9 @@ const Sidebar = ({sidebar}) => {
         <Link to="/communities" className="side-link">
           <MdOutlineDynamicFeed className="icon" /> <span>Communities</span>
         </Link>
-        <div className="side-link">
+        <Link to="/leaderboard" className="side-link">
           <MdOutlineLeaderboard className="icon" /> <span>Leaderboard</span>
-        </div>
+        </Link>
         <div className="side-link">
           <HiInformationCircle className="icon" /> <span>About 3speak</span>
         </div>
