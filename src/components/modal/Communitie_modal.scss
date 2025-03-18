@@ -1,4 +1,4 @@
-
+@use "../../mixins.scss" as mix;
 .close-btn {
   background: none;
   border: none;
@@ -65,10 +65,23 @@
   overflow: hidden;
   border-radius: 12px;
   text-align: center;
+  @include mix.respond(phone) {
+    min-width: 90%;
+    padding: 14px 10px;
+  }
   &.video-upload-moadal-size{
     max-width: 450px;
   min-width: 450px;
+  @include mix.respond(phone) {
+    max-width: 99%;
+    padding: 14px 10px;
+    min-width: 90%;
+    // width: 80%;
   }
+  }
+  // &.bene{
+    
+  // }
   &.auth-bg{
     background-color: green;
     background-image: linear-gradient(to right, rgb(55, 65, 81), rgb(31, 41, 55), rgb(17, 24, 39));

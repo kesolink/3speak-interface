@@ -29,13 +29,14 @@ function CommunitiesRender() {
         observer: ''
       });
       setData(res);
-      setFilteredData(res); // Initialize filteredData with all data
+      setFilteredData(res); // Initialize filteredData with all data     
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
+  console.log(data)
 
   // Handle search input change
   const handleSearch = (e) => {
@@ -85,7 +86,7 @@ function CommunitiesRender() {
         <SkeletonLoader />
       ) : (
         <div className="blog-feed">
-          {filteredData.map((community, index) => (
+          {filteredData?.map((community, index) => (
             <div key={index} className="blog-card" onClick={() => handleCardClick(community.name)}>
               <div className="img-wrap">
                 <img
