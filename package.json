@@ -24,6 +24,7 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "dompurify": "^3.2.4",
+    "echarts": "^5.6.0",
     "graphql": "^16.9.0",
     "hive-content-renderer": "^1.0.3",
     "js-md5": "^0.8.3",

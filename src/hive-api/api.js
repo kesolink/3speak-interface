@@ -15,6 +15,7 @@ const client = new Client(SERVERS, {
     client.call("bridge", endpoint, params);
 
 
+
   export const getCommunity = async (name, observer = "") => {
     try {
           const result = await bridgeApiCall("get_community", { name, observer });
@@ -24,6 +25,17 @@ const client = new Client(SERVERS, {
           return null;
       }
   };
+
+  export const isAccountValid = async (username)=>{
+    try {
+      const accounts = await client.database.getAccounts([username]);
+      return accounts.length > 0;
+    } catch (error) {
+      console.error('Error fetching account:', error);
+      return false;
+    }
+  }
+
 
   export const createHiveCommunityKY = async (username, communityName, keys, activeKey) => {
     return new Promise(async (resolve, reject) => {
