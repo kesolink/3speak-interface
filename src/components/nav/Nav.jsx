@@ -108,7 +108,13 @@ function Nav({ setSideBar, toggleProfileNav }) {
           {/* <IoIosNotifications size={20} /> */}
           
           <img src={getUserProfile?.images?.avatar} alt="" onClick={toggleProfileNav} />
-          {/* <button onClick={LogOut}>LogOut</button> */}
+          {/* <div className="dropdown-menu">
+            <Link className="list">My Channel</Link>
+            <Link className="list">Upload Video</Link>
+            <Link className="list">PlayList</Link>
+            <Link to="/wallet" className="list" >Wallet</Link>
+            <Link className="list" >Logout</Link>
+          </div> */}
         </div>
       ) : (
         <>

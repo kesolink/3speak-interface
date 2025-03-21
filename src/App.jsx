@@ -25,6 +25,7 @@ import CommunityPage from './components/Communities/CommunityPage'
 import TagFeed from './page/TagFeed'
 import LeaderBoard from './page/LeaderBoard'
 import ProfilePage from './page/ProfilePage'
+import Wallet from './page/Wallet'
 
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
          <Route path="/t/:tag" element={<TagFeed />} />
          <Route path="/leaderboard" element={<LeaderBoard />} />
          <Route path="/profile" element={<ProfilePage />} />
+         <Route path="/wallet" element={<Wallet />} />
        </Routes>
       </div>
        <ProfileNav isVisible={profileNavVisible} onclose={toggleProfileNav} />
