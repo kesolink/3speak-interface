@@ -18,6 +18,7 @@ import "./FirstUploads.scss"
 import { useQuery } from '@apollo/client'
 import { NEW_CONTENT } from '../graphql/queries'
 import Cards from '../components/Cards/Cards'
+// import Card2 from '../components/Cards/Card2'
 import CardSkeleton from '../components/Cards/CardSkeleton'
 const NewVideos = () => {
   const { data, loading, error } = useQuery(NEW_CONTENT );

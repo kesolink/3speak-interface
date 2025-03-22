@@ -1,6 +1,11 @@
+@use "../../mixins.scss" as mix;
 .play-video{
     flex-basis: 69%;
     // max-width: 69%; // Prevents overflow
+    @include mix.respond(phone) {
+        flex-basis: 100%;
+        width: 100%;
+      }
     
     video{
         width: 100%;
@@ -33,15 +38,28 @@
             margin-top: 10px;
             font-weight: 600;
             font-size: 18.5px;
+            @include mix.respond(phone) {
+                font-size: 14.5px;
+              }
         }
         .tag-wrapper{
             margin-top: 10px;
+            @include mix.respond(phone) {
+                display: flex;
+                flex-wrap: wrap;
+
+              }
             span{
                 padding: 2px 15px;
                 background-color: #4a96c281;
                 border-radius: 6px;
                 margin-right: 3px;
                 font-size: 14.35px;
+                @include mix.respond(phone) {
+                    margin-bottom: 5px;
+    
+                  }
+
             }
         }
         .community-title-wrap{

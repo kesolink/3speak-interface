@@ -28,6 +28,7 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
   const [openTooltip, setOpenToolTip] = useState(false);
   const [tooltipVoters, setTooltipVoters] = useState([]);
   const [voted, setVoted] = useState(null)
+  const navigate = useNavigate();
 
   // Define getTooltipVoters BEFORE useEffect
   const getTooltipVoters = async () => {
@@ -167,6 +168,10 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
       alert("Hive Keychain is not installed. Please install the extension.");
     }
   };
+  const handleSelectTag = (tag) => {
+    console.log(tag)
+    navigate(`/t/${tag}`);
+  };
 
   console.log(videoUrlSelected);
 
@@ -202,7 +207,7 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
         <h3>{videoDetails?.title}</h3>
         <div className="tag-wrapper">
           {tags.map((tags, index) => (
-            <span key={index}>{tags}</span>
+            <span key={index} onClick={()=>handleSelectTag(tags)}>{tags}</span>
           ))}
         </div>
         <div className="community-title-wrap">

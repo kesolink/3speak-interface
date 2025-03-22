@@ -114,7 +114,7 @@ function Beneficiary_modal({ isOpen, close, setBeneficiaries }) {
     <div className={`modal ${isOpen ? 'open' : ''}`}>
       <div className="overlay" onClick={close}></div>
       <div
-        className={`modal-content video-upload-moadal-size ${
+        className={`modal-content video-upload-moadal-size bene ${
           isOpen ? 'open' : ''
         }`}
         onClick={(e) => e.stopPropagation()}

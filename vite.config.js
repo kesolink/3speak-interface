@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -30,7 +29,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        // Your existing SCSS configuration
+        additionalData: `@use  "./src/mixins.scss";`, // Ensure this file exists
       },
     },
     devSourcemap: true,

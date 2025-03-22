@@ -22,6 +22,10 @@ import StudioPage from './components/studio/studioPage'
 import TestStudio from './components/studio/TestStudio'
 import CommunitiesRender from './components/Communities/CommunitiesRender'
 import CommunityPage from './components/Communities/CommunityPage'
+import TagFeed from './page/TagFeed'
+import LeaderBoard from './page/LeaderBoard'
+import ProfilePage from './page/ProfilePage'
+import Wallet from './page/Wallet'
 
 
 function App() {
@@ -61,6 +65,10 @@ function App() {
          <Route path="/teststudio" element={<TestStudio />} />
          <Route path="/communities" element={<CommunitiesRender />} />
          <Route path="/community/:communityName" element={<CommunityPage />} />
+         <Route path="/t/:tag" element={<TagFeed />} />
+         <Route path="/leaderboard" element={<LeaderBoard />} />
+         <Route path="/profile" element={<ProfilePage />} />
+         <Route path="/wallet" element={<Wallet />} />
        </Routes>
       </div>
        <ProfileNav isVisible={profileNavVisible} onclose={toggleProfileNav} />

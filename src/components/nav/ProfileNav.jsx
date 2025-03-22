@@ -43,7 +43,7 @@ function ProfileNav({isVisible, onclose}) {
             </div>
            </div>
            <div className="list-wrap">
-          <Link  className="wrap">
+          <Link to="/profile"  className="wrap">
             <IoMdPerson className="icon" /> <span>My Channel</span>
           </Link>
           <Link  className="wrap">
@@ -52,7 +52,7 @@ function ProfileNav({isVisible, onclose}) {
           <Link  className="wrap">
             <MdCloudUpload className="icon" /> <span>Upload Video</span>
           </Link>
-          <Link  className="wrap">
+          <Link to="/wallet" className="wrap">
             <RiWallet3Fill className="icon" /> <span>Wallet</span>
           </Link>
           <Link  className="wrap">
