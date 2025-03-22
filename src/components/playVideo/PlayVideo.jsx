@@ -11,7 +11,7 @@ import {
   GET_TOTAL_COUNT_OF_FOLLOWING,
   GET_VIDEO,
 } from "../../graphql/queries";
-import ReactJWPlayer from "react-jw-player";
+import JWPlayer from "@jwplayer/jwplayer-react";
 import dayjs from "dayjs";
 import BlogContent from "./BlogContent";
 import CommentSection from "./CommentSection";
@@ -20,6 +20,7 @@ import { MdPeople } from "react-icons/md";
 import { getUersContent } from "../../utils/hiveUtils";
 import ToolTip from "../tooltip/ToolTip";
 import { ImSpinner9 } from "react-icons/im";
+import {  useNavigate } from "react-router-dom";
 
 const PlayVideo = ({ videoDetails, author, permlink }) => {
   const { user } = useAppStore();
@@ -32,6 +33,7 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
   const getTooltipVoters = async () => {
     try {
       const data = await getUersContent(author, permlink);
+      console.log(data)
       if (!data) {
         console.log("Post not found");
         return [];
@@ -119,7 +121,6 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
   });
 
   const profile = getUserProfile.data?.profile;
-  const content = videoDetails?.body.split("\n");
   const tags = videoDetails?.tags?.slice(0, 7);
   const comunity_name = videoDetails?.community?.title;
 
@@ -167,42 +168,36 @@ const PlayVideo = ({ videoDetails, author, permlink }) => {
     }
   };
 
-  // console.log(videoDetails);
+  console.log(videoUrlSelected);
 
   return (
     <div className="play-video">
       <div className="top-container">
-        {/* <ReactJWPlayer
-          licenseKey="64HPbvSQorQcd52B8XFuhMtEoitbvY/EXJmMBfKcXZQU2Rnn"
-          customProps={{
-            playbackRateControls: true,
-            autostart: false,
-          }}
-          file={`${videoUrlSelected}`}
-          image={`${spkvideo?.thumbnail_url}`}
-          id="botr_UVQWMA4o_kGWxh33Q_div"
-          playerId={"1242424242"}
-          playerScript="https://cdn.jwplayer.com/libraries/HT7Dts3H.js"
-        ></ReactJWPlayer> */}
-
-{videoUrlSelected ? (
-      <ReactJWPlayer
-        licenseKey="64HPbvSQorQcd52B8XFuhMtEoitbvY/EXJmMBfKcXZQU2Rnn"
-        customProps={{
-          playbackRateControls: true,
-          autostart: false,
-        }}
-        file={videoUrlSelected}
-        image={spkvideo?.thumbnail_url}
-        id="botr_UVQWMA4o_kGWxh33Q_div"
-        playerId="1242424242"
-        playerScript="https://cdn.jwplayer.com/libraries/HT7Dts3H.js"
-      />
-    ) : (
-      <div className="video-loader">
-        <ImSpinner9 className="spinner" />
-      </div>
-    )}
+      {videoUrlSelected ? (
+          <JWPlayer
+            library="https://cdn.jwplayer.com/libraries/HT7Dts3H.js" // Updated library
+            licenseKey="6A187VGxhSB65jBlTtuEk7U0pu+jYZ21fZE9AOU/d6CSMV2b" // Verify key validity
+            playlist={[
+              {
+                file: videoUrlSelected,
+                image: spkvideo?.thumbnail_url,
+              },
+            ]}
+            playbackRateControls={true}
+            autostart={false}
+            aspectRatio="16:9"
+            customProps={{
+              hlsjsConfig: {
+                debug: true, // Enable HLS.js debugging
+                capLevelToPlayerSize: true, // Auto quality adjustment
+              },
+            }}
+          />
+        ) : (
+          <div className="video-loader">
+            <ImSpinner9 className="spinner" />
+          </div>
+        )}
 
         <h3>{videoDetails?.title}</h3>
         <div className="tag-wrapper">
